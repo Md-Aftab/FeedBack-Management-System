@@ -1,0 +1,21 @@
+﻿@model  DataLibrary.ViewModel.FeedbackViewModel
+
+<div class="col-md-12">
+    <hr />
+    <h3>Feebdback List</h3>
+    @foreach (var item in Model.FeedbackViewModelList)
+    {
+        <article>
+            <header>
+                <div class="image round1">
+                    <img src="/UserPhoto/@item.UserMobile/@item.UserPhoto" alt="@item.UserName" /><h4>@item.UserName</h4>
+                </div>
+            </header>
+            <p>Recommend: @item.Recommend</p>
+            <p>Feedback:  @item.Comments</p>
+
+        </article>
+       
+    }
+</div>
+

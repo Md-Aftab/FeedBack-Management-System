@@ -1,0 +1,146 @@
+﻿@model DataLibrary.ViewModel.UserViewModel 
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <p class="login-box-msg">Register to start your session</p>
+    @Html.ValidationSummary(true)
+
+    <div class="row">
+        <div class="col-md-12">
+            <div id="sucessalert" class="alert alert-success alert-dismissible" style="display: none">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-check"> </i> </h4>
+                <span></span>
+            </div>
+            <div id="failurealert" class="alert alert-danger alert-dismissible" style="display: none">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-ban"> </i> </h4>
+                <span></span>
+            </div>
+            <div id="validationalert" class="alert alert-danger alert-dismissible" style="display: none">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-ban"> </i> <label id="lblMsg"></label> </h4>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Email">Email</label><span style="color:red">*</span>
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email", @autocomplete = "off" })               
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Mobile">Password</label><span style="color:red">*</span>
+                    @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Password", @autocomplete = "off" })
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+  
+    
+
+    <div class="row">
+        <div class="col-md-10 logoption">
+
+        </div>
+
+        <div class="col-md-2">
+            <button type="button" id="btnLogin" class="btn btn-primary btn-block btn-flat">Login</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 logoption">
+            <p class="text">Don't have an account? <a href="@Url.Action("Registration", "Home")" id="link">Click Here</a></p>
+        </div>
+
+    </div>
+
+<script>
+
+    //$(document).ready(function () {
+
+    //});
+    $(function () {
+
+        $("#btnLogin").click(function () {
+            var Email = $("#Email").val();
+            var Password = $("#Password").val();
+
+            var mailformat = /^\w+([\.-]?\w+)*@@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            var numbers = /^[0-9._-]+$/;
+
+           if (Email == "") {
+                $("#validationalert").show();
+                $('#validationalert').delay(3000).fadeOut(400);
+                $("#lblMsg").html("Please enter email id");
+                $("#UserEmail").focus();
+            } else if (!mailformat.test(Email)) {
+                $("#validationalert").show();
+                $('#validationalert').delay(3000).fadeOut(400);
+                $("#lblMsg").html("Please enter valid email.");
+                $("#UserEmail").focus();
+            }
+            else if (Password == "") {
+                $("#validationalert").show();
+                $('#validationalert').delay(3000).fadeOut(400);
+                $("#lblMsg").html("Please enter valid password.");
+                $("#UserPassword").focus();
+            }
+            else {
+
+                var formData = {
+                    "Email": Email,
+                    "Password": Password
+                };
+
+                $.ajax({
+                    url: "/Home/Login",
+                    type: "POST",
+                    contentType: 'application/json',
+                    dataType: "json",
+                    data: JSON.stringify(formData),
+                    success: function (data, textStatus, jqXHR) {
+                        if (data.success) {
+                            debugger;
+                            $("#sucessalert > h4 > i").html(data.msg);
+                            $("#sucessalert").show();
+                            $('#sucessalert').delay(5000).fadeOut(400);
+                            window.location.href = '/Home';
+                        }
+                        else {
+                            $("#failurealert > h4 > i").html(data.msg);
+                            $("#failurealert").show();
+                            $('#failurealert').delay(5000).fadeOut(400);
+
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $("#failurealert > h4 > i").html(" Something Went Wrong !!");
+                        $("#failurealert").show();
+                        $('#failurealert').delay(5000).fadeOut(400);
+                    },
+                    compete: function () {
+                        $(btn).button('reset');
+                        $(btn).dequeue();
+                    }
+                });
+            }
+        });
+    });
+</script>
+

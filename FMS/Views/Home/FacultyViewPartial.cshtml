@@ -1,0 +1,29 @@
+﻿@model DataLibrary.ViewModel.UserViewModel
+
+<section id="one" class="wrapper">
+    <div class="inner">
+        <header>
+            <h2>Faculty Details</h2>
+        </header>
+        <div class="flex flex-3">
+            @for (int i = 0; i < Model.UserViewModelList.Count; i++)
+            {
+                <article>
+                    <header>
+                        <div class="image round">
+                            <a href='@Url.Action("FacultyDetails", "Home", new { Id = @Model.UserViewModelList[i].Id })'><img src="/UserPhoto/@Model.UserViewModelList[i].Mobile/@Model.UserViewModelList[i].UserPhoto" alt="@Model.UserViewModelList[i].FirstName" />
+                            </a>
+</div>
+                        <h3>@Model.UserViewModelList[i].FirstName @Model.UserViewModelList[i].LastName <br /> @Model.UserViewModelList[i].HIgestQualification</h3>
+                    </header>
+                    <p>@Model.UserViewModelList[i].AboutInfo</p>
+                    <footer>
+                        <a href="@Url.Action("FacultyDetails", "Home", new { Id = @Model.UserViewModelList[i].Id})" class="button special">More</a>
+                    </footer>
+                </article>
+            }
+             
+            
+        </div>
+    </div>
+</section>

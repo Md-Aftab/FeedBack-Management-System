@@ -1,0 +1,28 @@
+﻿@model DataLibrary.ViewModel.UserViewModel
+           @using GridMvc.Html
+@{
+    ViewBag.Title = "StudentsList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="@Url.Action("~/Content/Gridmvc.css" )" rel="stylesheet" />
+<link href="@Url.Action("~/Content/bootstrap.min.css")" rel="stylesheet" />
+<script src="@Url.Action(" ~ />Scripts/jquery-1.10.2.min.js")"></script>
+<script src="@Url.Action(" ~ />Scripts/gridmvc.min.js")"></script>
+<div class="code-cut">
+    @Html.Grid(Model.UserViewModelList).Columns(Columns =>
+    {
+        Columns.Add(c => c.FirstName).Titled("FirstName").Filterable(true);
+        Columns.Add(c => c.LastName).Titled("LastName").Filterable(true);
+        Columns.Add(c => c.Mobile).Titled("Mobile").Filterable(true);
+        Columns.Add(c => c.Email).Titled("Email").Filterable(true);
+        Columns.Add(c => c.AboutInfo).Titled("AboutInfo").Filterable(true);
+        Columns.Add()
+        .Encoded(false)
+        .Sanitized(false)
+        .SetWidth(30)
+        .RenderValueAs(o => Html.ActionLink("Edit", "UpdateUser", "Home", new { Id = o.Id },null));
+
+    }).WithPaging(10).Sortable(true)
+</div>
+   

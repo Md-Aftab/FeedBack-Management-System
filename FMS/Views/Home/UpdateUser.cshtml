@@ -1,0 +1,228 @@
+﻿@model DataLibrary.ViewModel.UserViewModel 
+@{
+    ViewBag.Title = "UpdateUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <p class="login-box-msg">Update User Information</p>
+    @Html.ValidationSummary(true)
+
+    <div class="row">
+        <div class="col-md-12">
+            <div id="sucessalert" class="alert alert-success alert-dismissible" style="display: none">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-check"> </i> </h4>
+                <span></span>
+            </div>
+            <div id="failurealert" class="alert alert-danger alert-dismissible" style="display: none">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-ban"> </i> </h4>
+                <span></span>
+            </div>
+            <div id="validationalert" class="alert alert-danger alert-dismissible" style="display: none">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-ban"> </i> <label id="lblMsg"></label> </h4>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="First_Name">First Name</label><span style="color:red">*</span>
+                    @Html.HiddenFor(model => model.Id)
+                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @placeholder = "First Name", @autocomplete = "off" })
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Last_Name">Last Name</label><span style="color:red">*</span>
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @placeholder = "Last Name", @autocomplete = "off" })
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Email">Email</label><span style="color:red">*</span>
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email", @autocomplete = "off",@readonly=true })
+                    <span id="errmsg" style="color:#EA4335"></span>
+                    <span id="Okmsg" style="color:#34A853;"></span>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <div class="image round">
+                        <img src="/UserPhoto/@Model.Mobile/@Model.UserPhoto" alt="@Model.FirstName" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="Mobile">Mobile</label><span style="color:red">*</span>
+                    @Html.TextBoxFor(model => model.Mobile, new { @class = "form-control", @onkeypress = "return onlyNos(event,this);", @placeholder = "Mobile", @autocomplete = "off" })
+
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Upload Photo</label><span style="color:red">*</span>
+                    @Html.TextBoxFor(model => model.UserPhoto, new { @class = "form-control", @type = "file", @autocomplete = "off" })
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Higest Qualification</label>
+                    @Html.TextBoxFor(model => model.HIgestQualification, new { @class = "form-control", @placeholder = "Higest Qualification", @autocomplete = "off" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group has-feedback">
+                    <label>About Info</label>
+                    @Html.TextAreaFor(model => model.AboutInfo, new { @class = "form-control", @type = "About Info", @autocomplete = "off" })
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="form-group has-feedback">
+                <label>Specialist</label>
+                @Html.TextAreaFor(model => model.Specialist, new { @class = "form-control", @type = "Specialist ", @autocomplete = "off" })
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+    <div class="col-md-10 logoption">
+        </div>
+        
+        <div class="col-md-2">
+            <button type="button" id="btnSave" class="btn btn-primary btn-block btn-flat">Save</button>
+        </div>
+    </div>
+
+   
+</div>
+
+
+<script>
+    $(function () {
+       
+        $("#btnSave").click(function () {
+            debugger;
+            var Id = $("#Id").val();
+            var FirstName = $("#FirstName").val();
+            var LastName = $("#LastName").val();
+           
+            var Mobile = $("#Mobile").val();
+           
+            var HIgestQualification = $("#HIgestQualification").val();
+            var AboutInfo = $("#AboutInfo").val();
+            var Specialist = $("#Specialist").val();
+
+
+            var file = document.getElementById("UserPhoto").files[0];
+
+            if (typeof (file) === "undefined") {
+                file = "";
+            }
+
+            var formData = new FormData();
+            formData.append("file", file);
+            formData.append("FirstName", FirstName);
+            formData.append("LastName", LastName);
+           
+            formData.append("Mobile", Mobile);
+            formData.append("HIgestQualification", HIgestQualification);
+            formData.append("AboutInfo", AboutInfo);
+            formData.append("Specialist", Specialist);
+            formData.append("Id", Id);
+
+            var mailformat = /^\w+([\.-]?\w+)*@@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            var numbers = /^[0-9._-]+$/;
+
+            if (FirstName == "") {
+                $("#validationalert").show();
+                $('#validationalert').delay(3000).fadeOut(400);
+                $("#lblMsg").html("Please enter first name");
+                $("#FirstName").focus();
+            } else if (LastName == "") {
+                $("#validationalert").show();
+                $('#validationalert').delay(3000).fadeOut(400);
+                $("#lblMsg").html("Please enter last name");
+                $("#LastName").focus();
+            } 
+            else if (Mobile == "") {
+                $("#validationalert").show();
+                $('#validationalert').delay(3000).fadeOut(400);
+                $("#lblMsg").html("Please enter mobile number");
+                $("#Mobile").focus();
+            } 
+            else {
+
+
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/UpdateUser",
+                    data: formData,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    success: function (data, textStatus, jqXHR) {
+                        if (data.success) {
+                            debugger;
+                            $("#sucessalert > h4 > i").html(data.msg);
+                            $("#sucessalert").show();
+                            $('#sucessalert').delay(5000).fadeOut(400);
+                           
+
+                        } else {
+                            $("#failurealert > h4 > i").html(data.msg);
+                            $("#failurealert").show();
+                            $('#failurealert').delay(5000).fadeOut(400);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $("#failurealert > h4 > i").html(" Something Went Wrong !!");
+                        $("#failurealert").show();
+                        $('#failurealert').delay(5000).fadeOut(400);
+                    },
+                    compete: function () {
+                        $(btn).button('reset');
+                        $(btn).dequeue();
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+
+

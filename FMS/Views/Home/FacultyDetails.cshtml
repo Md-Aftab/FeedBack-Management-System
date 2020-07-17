@@ -1,0 +1,166 @@
+﻿@model  DataLibrary.ViewModel.UserViewModel
+@{
+    ViewBag.Title = "FacultyDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-6">
+            <article>
+                <header>
+                    <div class="image round">
+                        <img src="/UserPhoto/@Model.Mobile/@Model.UserPhoto" alt="@Model.FirstName" />
+                    </div>
+                    <h3>@Model.FirstName @Model.LastName <br /> @Model.HIgestQualification</h3>
+                </header>
+            </article>
+        </div>
+        <div class="col-md-6">
+            @if (Session["UserData"] != null)
+            {
+                <article>
+                    <p>Mobile: @Model.Mobile</p>
+                    <p>Email:  @Model.Email</p>
+                    <p>Specialist: @Model.Specialist
+</p>
+                    <p>About:      @Model.AboutInfo</p>
+
+                </article>
+            }
+            else
+            {
+                <article>
+                    <p>Please login to view full details </p>
+                </article>
+            }
+        </div>
+
+    </div>
+</div>
+
+
+<div class="row">
+    @if (Session["UserData"] != null)
+    {
+        var UserData = (DataLibrary.ViewModel.UserViewModel)Session["UserData"];
+        <div class="col-md-6">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <input type="hidden" id="loginId" value="@UserData.Id" />
+                    <input type="hidden" id="FacultyId" value="@Model.Id" />
+                    <label>Recommend</label><span style="color:red">*</span>  
+                                     
+                    <input type="radio" id="Yes" name="Recommend" value="True" /><label>Yes</label>              
+                    <input type="radio" id="No" name="Recommend" value="False" /><label>No</label> 
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Feedback</label><span style="color:red">*</span>
+                    <textarea id="Feedback" name="Feedback" class="form-control"></textarea>
+
+
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="col-md-10">
+                   
+                </div>
+                <div class="col-md-2">
+                    <button type="button" id="btnSave" class="btn btn-primary btn-block btn-flat">Save</button>
+                </div>
+            </div>
+
+
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-md-12">
+            <div id="sucessalert" class="alert alert-success alert-dismissible" style="display: none">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-check"> </i> </h4>
+                <span></span>
+            </div>
+            <div id="failurealert" class="alert alert-danger alert-dismissible" style="display: none">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-ban"> </i> </h4>
+                <span></span>
+            </div>
+            <div id="validationalert" class="alert alert-danger alert-dismissible" style="display: none">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="icon fa fa-ban"> </i> <label id="lblMsg"></label> </h4>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+<div class="row">
+    @{Html.RenderAction("ViewFeedbackPartial", "Home", new { Id = Model.Id });}
+</div>
+
+
+<script>
+    $(function () {
+        $("#btnSave").click(function () {
+            debugger;
+            var Feedback = $("#Feedback").val();
+            var Id = $("#loginId").val();
+            var Recommend = $("input[name=Recommend]:checked").val()
+            var FacultyId = $("#FacultyId").val();
+
+            var formData = new FormData();
+
+
+            formData.append("Comments", Feedback);
+            formData.append("Recommend", Recommend);
+            formData.append("UserId", Id);
+            formData.append("FacultyId", FacultyId);
+
+
+            if (Feedback == "") {
+                $("#validationalert").show();
+                $('#validationalert').delay(3000).fadeOut(400);
+                $("#lblMsg").html("Please enter feedback");
+                $("#Feedback").focus();
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/FeedBackEntry",
+                    data: formData,
+                    dataType: 'json',
+                    contentType: false,
+                    processData: false,
+                    success: function (data, textStatus, jqXHR) {
+                        if (data.success) {
+                            debugger;
+                            $("#sucessalert > h4 > i").html(data.msg);
+                            $("#sucessalert").show();
+                            $('#sucessalert').delay(5000).fadeOut(400);
+                            //window.location.href = "/Home/Login/";
+
+                        } else {
+                            $("#failurealert > h4 > i").html(data.msg);
+                            $("#failurealert").show();
+                            $('#failurealert').delay(5000).fadeOut(400);
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        $("#failurealert > h4 > i").html(" Something Went Wrong !!");
+                        $("#failurealert").show();
+                        $('#failurealert').delay(5000).fadeOut(400);
+                    },
+                    compete: function () {
+                        $(btn).button('reset');
+                        $(btn).dequeue();
+                    }
+                });
+            }
+        });
+    });
+</script>

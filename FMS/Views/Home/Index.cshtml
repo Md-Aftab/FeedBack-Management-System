@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<!-- Banner -->
+<section id="banner">
+    <h1>Welcome to GMIT Feedback Management System</h1>
+    <p>A unique applcation where student will rate the faculty</p>
+</section>
+
+<!-- One -->
+@{Html.RenderAction("FacultyViewPartial", "Home");}
+<div class="row" style="padding-bottom:10px;">
+    <div class="col-md-10">
+
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <input type="button" id="btnMore" name="btnMore" value="More" class="btn btn-primary special" style="float:right" />
+
+            @*<a href="@Url.Action("FacultyView", "Home")"class="button special" > More</a>*@
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+<!-- Two -->
+@{Html.RenderAction("StudentViewPartial", "Home");}
+
+<div class="row" style="padding-top:10px;">
+    <div class="col-md-10">
+
+    </div>
+    <div class="col-md-2">
+        <div class="form-group">
+            <input type="button" id="btnMore1" name="btnMore" value="More" class="btn btn-primary special" style="float:right" />
+
+        </div>
+    </div>
+    <div class="clear"></div>
+
+    @*<a href="@Url.Action("StudentView", "Home")" class="button special"> More</a>*@
+</div>
+<!-- Three -->
+<section id="three" class="wrapper special">
+    <div class="inner">
+        <header class="align-center">
+            <h2>GMIT CAMPUS</h2>
+            <p>Library and  Canteen </p>
+        </header>
+        <div class="flex flex-2">
+            <article>
+                <div class="image fit">
+                    <img src="images/Library1 (2).jpg" alt="Pic 01" />
+                </div>
+                <header>
+                    <h3>Library </h3>
+                </header>
+                <p>GMIT College Library are open at 10am on Tuesday and and closed at 6pm on saturday will remain closed through holiday.All kind of book are available in our college library </p>
+                <footer>              
+                </footer>
+            </article>
+            <article>
+                <div class="image fit">
+                    <img src="images/coffee.jpg" alt="Pic 02" />
+                </div>
+                <header>
+                    <h3>Canteen</h3>
+                </header>
+                <p>The canteen is primarily responsible for serving nutritious and hygienic food to the students and staff. It also servesmeals to the students residing in the campus.</p>
+                <footer>
+                   
+                </footer>
+            </article>
+        </div>
+    </div>
+</section>
+<script>
+    $(function () {
+        $("#btnMore").click(function () {
+            window.location.href = '/Home/FacultyView';
+        })
+
+    })
+    $(function () {
+        $("#btnMore1").click(function () {
+            window.location.href = '/Home/StudentView';
+        })
+
+    })
+</script>

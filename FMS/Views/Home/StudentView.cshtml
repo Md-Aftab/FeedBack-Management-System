@@ -1,0 +1,24 @@
+﻿@model DataLibrary.ViewModel.UserViewModel
+@{
+    ViewBag.Title = "StudentView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Students Details</h2>
+<div class="flex flex-4">
+
+
+    @for (int i = 0; i < Model.UserViewModelList.Count; i++)
+    {
+        <div class="box person">
+            <div class="image round">
+                <img src="/UserPhoto/@Model.UserViewModelList[i].Mobile/@Model.UserViewModelList[i].UserPhoto" alt="@Model.UserViewModelList[i].FirstName" />
+            </div>
+            <h3>@Model.UserViewModelList[i].FirstName @Model.UserViewModelList[i].LastName</h3>
+            <p>@Model.UserViewModelList[i].AboutInfo</p>
+        </div>
+
+
+    }
+
+</div>

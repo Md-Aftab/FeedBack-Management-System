@@ -1,0 +1,145 @@
+﻿@model  DataLibrary.ViewModel.UserViewModel
+@using DataLibrary.ViewModel ;
+@{
+    UserViewModel objModel = new UserViewModel();
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - GMIT Feedback Management System</title>
+
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/main.css" rel="stylesheet" />
+
+
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+
+
+    <script src="~/Scripts/skel.min.js"></script>
+    <script src="~/Scripts/util.js"></script>
+    <script src="~/Scripts/main.js"></script>
+
+
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="inner">
+            <a href="/" class="logo">GMIT FMS</a>
+            <nav id="nav">
+                @if (Session["UserData"] != null)
+                {
+                    var UserData = (DataLibrary.ViewModel.UserViewModel)Session["UserData"];
+                    <ul>
+                        <li class="dropdownaccount">
+                            <div>
+                                <img src="/UserPhoto/@UserData.Mobile/@UserData.UserPhoto" alt="@UserData.FirstName" style="width:50px;" />
+
+                                <span>@UserData.FirstName</span>
+                            </div>
+
+                            <ul class="dropdown-content">
+                                <li><a href="@Url.Action("UpdateProfile", "Home")"> Update Profile</a></li>
+                                <li><a href="@Url.Action("Changepassword", "Home")"> Change Password</a></li>
+                                @if (UserData.UserTypeId == 2)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("AddFaculty", "Home")">Add Faculty</a> </li>
+                                       <li> <a href="@Url.Action("FacultyList", "Home")">Faculty List</a> </li>
+                                      <li> <a href="@Url.Action("StudentsList", "Home")">Students List</a> </li>
+
+                                }
+                            <li><a href="@Url.Action("Logut", "Home")"> Logout</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+                }
+                else
+                {
+                    <a href="@Url.Action("Registration","Home")">Registration</a>
+                    <a href="@Url.Action("Login", "Home")">Login</a>
+                }
+            </nav>
+            <a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+        </div>
+    </header>
+    <div style="margin:50px;">
+        @RenderBody()
+    </div>
+    <div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+        <div class="inner">
+            <div class="flex">
+                <div class="copyright">
+                    &copy; GMIT Feedback Management System
+                </div>
+                @*<ul class="icons">
+                    <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+                    <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+                    <li><a href="#" class="icon fa-linkedin"><span class="label">linkedIn</span></a></li>
+                    <li><a href="#" class="icon fa-pinterest-p"><span class="label">Pinterest</span></a></li>
+                    <li><a href="#" class="icon fa-vimeo"><span class="label">Vimeo</span></a></li>
+                </ul>*@
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function onlyNos(e, t) {
+            try {
+                if (window.event) {
+                    var charCode = window.event.keyCode;
+                }
+                else if (e) {
+                    var charCode = e.which;
+                }
+                else { return true; }
+                if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                    return false;
+                }
+                return true;
+            }
+
+            catch (err) {
+
+                alert(err.Description);
+            }
+        }
+
+        function PriceNos(e, t) {
+            try {
+                if (window.event) {
+                    var charCode = window.event.keyCode;
+                }
+                else if (e) {
+                    var charCode = e.which;
+                }
+                else {
+                    return true;
+                }
+                if (charCode > 31 && charCode != 46 && (charCode < 48 || charCode > 57)) {
+                    return false;
+                }
+                return true;
+            } catch (err) {
+                alert(err.Description);
+            }
+        }
+
+        function isValidEmailAddress(emailAddress) {
+            var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+            var status = pattern.test(emailAddress);
+
+            return status;
+        }
+    </script>
+
+</body>
+</html>
